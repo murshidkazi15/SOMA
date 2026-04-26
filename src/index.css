@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* SOMA — Neuroscience x Music Player Design System */
+
+@layer base {
+  :root {
+    /* Core palette — dark mode native */
+    --background: 240 20% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 25% 7%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 25% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Brand */
+    --primary: 252 58% 26%;          /* deep purple #2d1b69 */
+    --primary-foreground: 0 0% 100%;
+
+    --teal: 192 100% 50%;            /* electric teal #00d4ff */
+    --amber: 36 91% 55%;             /* warm amber #f5a623 */
+    --magenta: 338 100% 59%;         /* hot pink #ff2d78 */
+    --purple-deep: 252 58% 26%;
+    --purple-glow: 270 70% 45%;
+
+    --secondary: 240 20% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 15% 14%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 192 100% 50%;
+    --accent-foreground: 240 20% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 100%;             /* used with /8 opacity */
+    --input: 240 20% 12%;
+    --ring: 192 100% 50%;
+
+    --radius: 1rem;
+
+    /* Gradients */
+    --gradient-cta: linear-gradient(135deg, hsl(252 70% 35%) 0%, hsl(192 100% 50%) 100%);
+    --gradient-match: conic-gradient(from 180deg, hsl(338 100% 59%), hsl(36 91% 55%), hsl(192 100% 50%), hsl(252 70% 45%));
+    --gradient-radial-glow: radial-gradient(ellipse at center, hsl(270 70% 30% / 0.5) 0%, transparent 60%);
+    --gradient-bg: radial-gradient(ellipse at 20% 10%, hsl(252 58% 14% / 0.6), transparent 50%),
+                   radial-gradient(ellipse at 80% 90%, hsl(192 80% 12% / 0.4), transparent 50%);
+
+    /* Shadows / Glows */
+    --glow-teal: 0 0 20px hsl(192 100% 50% / 0.5), 0 0 40px hsl(192 100% 50% / 0.2);
+    --glow-magenta: 0 0 20px hsl(338 100% 59% / 0.5);
+    --glow-amber: 0 0 20px hsl(36 91% 55% / 0.5);
+    --glass-shadow: 0 8px 32px 0 hsl(240 50% 2% / 0.6);
+
+    /* Motion */
+    --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Force dark — there is no light mode */
+  .dark { color-scheme: dark; }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html, body, #root { @apply h-full; }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    background-image: var(--gradient-bg);
+    background-attachment: fixed;
+    position: relative;
+  }
+
+  /* Grain + dot grid overlays */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image:
+      radial-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 90%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  #root { position: relative; z-index: 3; }
+
+  h1, h2, h3, h4 { letter-spacing: -0.02em; }
+}
+
+@layer components {
+  .glass {
+    background: linear-gradient(180deg, hsl(240 25% 9% / 0.7), hsl(240 25% 6% / 0.7));
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-inset {
+    background: hsl(240 30% 5% / 0.6);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+  }
+
+  .smallcaps {
+    font-variant: all-small-caps;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+
+  .font-display { font-family: 'Playfair Display', serif; }
+  .font-sans-display { font-family: 'Space Grotesk', sans-serif; }
+
+  .text-glow-teal { text-shadow: 0 0 12px hsl(192 100% 50% / 0.6); }
+
+  .pill {
+    @apply inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-medium select-none cursor-pointer;
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    background: hsl(240 25% 9% / 0.6);
+    color: hsl(0 0% 80%);
+    transition: all 280ms var(--ease-cinematic);
+  }
+  .pill:hover {
+    border-color: hsl(192 100% 50% / 0.4);
+    color: hsl(0 0% 98%);
+  }
+  .pill[data-active="true"] {
+    background: linear-gradient(135deg, hsl(192 100% 50% / 0.18), hsl(252 70% 45% / 0.18));
+    border-color: hsl(192 100% 50% / 0.7);
+    color: hsl(192 100% 85%);
+    box-shadow: var(--glow-teal);
+  }
+
+  .soma-input {
+    @apply rounded-lg px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground/70;
+    background: hsl(0 0% 100% / 0.03);
+    border: 1px solid hsl(0 0% 100% / 0.06);
+    box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.04);
+    transition: border-color 220ms var(--ease-cinematic), box-shadow 220ms var(--ease-cinematic), background 220ms var(--ease-cinematic);
+  }
+
+  .soma-input:focus {
+    outline: none;
+    border-color: hsl(270 91% 65% / 0.3);
+    box-shadow: none;
+  }
+
+  .neural-response-panel {
+    position: relative;
+    transition: box-shadow 700ms var(--ease-cinematic), border-color 700ms var(--ease-cinematic), background 700ms var(--ease-cinematic);
+  }
+
+  .neural-response-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 700ms var(--ease-cinematic);
+    background: linear-gradient(180deg, hsl(var(--teal) / 0.08), transparent 40%, hsl(var(--magenta) / 0.06));
+    box-shadow: inset 0 0 0 1px hsl(var(--teal) / 0.2), inset 0 0 48px hsl(var(--teal) / 0.06);
+  }
+
+  .neural-response-panel.is-illuminated {
+    border-color: hsl(var(--teal) / 0.18);
+    box-shadow: var(--glass-shadow), 0 0 40px hsl(var(--teal) / 0.1), 0 0 72px hsl(var(--magenta) / 0.05);
+  }
+
+  .neural-response-panel.is-illuminated::after {
+    opacity: 1;
+  }
+
+  .cta-gradient {
+    background: var(--gradient-cta);
+    background-size: 200% 200%;
+  }
+}
+
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { scrollbar-width: none; }
+}
+
+/* Force any Spline-injected canvas to fill its container */
+.spline-host canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
